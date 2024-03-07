@@ -27,3 +27,16 @@ misinfo_d %>%
   geom_histogram(bins = 6)
 ```
 
+```{r}
+mean(misinfo_d$beliefs)
+```
+
+```{r}
+misinfo_d %>%
+  filter(gender %in% c('Male', 'Female')) %>%
+  t.test(formula = beliefs ~ gender, data = .)
+```
+
+In the sample, males had more misinformation beliefs (M = 0.73) than females (M = 0.61), but this was not statistically significant, t(491.31) = -1.201, p = 0.230.
+
+
