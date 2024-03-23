@@ -86,15 +86,36 @@ misinfo_d <- misinfo_d %>%
       recode(
         "Nothing at all" = 0,
         "Not very much" = 1,
-        "A great deal" = 2,
-        "A fair amount" = 3
+        "A fair amount" = 2,
+        "A great deal" = 3
       )
   )
-
 
 misinfo_d %>%
   cor.test(formula = ~ know_facebook_coded + beliefs, data = ., method = 'spearman')
 ```
 
 There was a statistically significant moderate positive correlation between number of misinformation beliefs and amount of knowledge which comes from Facebook, rs(498) = .22, p < .001.
+
+# Association between age and amount of knowledge about the coronavirus which comes from Facebook
+```{r}
+misinfo_d %>%
+  cor.test(formula = ~ know_facebook_coded + age, data = ., method = 'spearman')
+```
+
+# Association between age and number of misinformation beliefs about the coronavirus, controlling for amount of knowledge about the coronavirus which comes from Facebook
+```{r}
+misinfo_d <- misinfo_d %>%
+  mutate(
+    know_facebook_binary = 
+      as.numeric(know_facebook == 'A great deal'))
+
+misinfo_d %>%
+  lm(
+    formula = beliefs ~ age + know_facebook_binary, data = .
+  ) %>%
+  summary
+```
+Number of misinformation beliefs is predicted by age and amount of knowledge from Facebook, F(2,497) = 22.56, p < .001, r2 = .08. Both predictors were statistically significant, p < .001.
+
 
